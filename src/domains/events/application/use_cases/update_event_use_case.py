@@ -1,0 +1,51 @@
+from datetime import datetime
+from uuid import UUID
+
+from src.domains.events.domain.repositories.event_repository import EventRepository
+from src.domains.events.domain.exceptions.event_exceptions import EventNotFound
+from src.domains.events.domain.value_objects.event_capacity import EventCapacity
+
+from src.domains.events.application.dto.update_event_dto import UpdateEventDTO
+
+
+class UpdateEventUseCase:
+
+    def __init__(
+        self,
+        repository: EventRepository
+    ):
+        self.repository = repository
+
+    async def execute(
+        self,
+        event_id: UUID,
+        data: UpdateEventDTO
+    ):
+
+        event = await self.repository.get_by_id(
+            event_id
+        )
+
+        if not event:
+            raise EventNotFound()
+
+        if data.name is not None:
+            event.name = data.name
+
+        if data.description is not None:
+            event.description = data.description
+
+        if data.capacity is not None:
+            capacity = EventCapacity(data.capacity)
+
+            event.capacity = capacity.value
+
+        if data.starts_at is not None:
+            event.starts_at = data.starts_at
+
+        if data.ends_at is not None:
+            event.ends_at = data.ends_at
+
+        event.updated_at = datetime.utcnow()
+
+        return await self.repository.save(event)

@@ -1,0 +1,74 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+ENV/
+env/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# IDEs
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
+
+# PyCharm
+*.iml
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checkers
+.mypy_cache/
+.pyre/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# FastAPI / Uvicorn
+*.pid
+
+# Odoo
+*.local.conf
+
+# SQLite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+
+# VSCode testing
+.history/
+
+# Ruff / lint
+.ruff_cache/
+
+# Docker
+*.tar
+
+# Node (si tienes frontend)
+node_modules/
+
+# Secrets / keys
+*.pem
+*.key
