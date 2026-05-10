@@ -8,7 +8,7 @@ from src.infrastructure.http.requests.create_session_request import CreateSessio
 from src.infrastructure.http.requests.update_session_request import UpdateSessionRequest
 from src.infrastructure.http.responses.session_response import SessionResponse
 
-from src.infrastructure.http.auth_dependencies import get_current_user
+from src.infrastructure.http.auth_dependencies import get_current_user, require_admin_or_organizer
 
 from src.infrastructure.http.session_dependencies import (
     get_get_sessions_by_event_use_case,
@@ -47,7 +47,7 @@ async def get_session(
 async def create_session(
     event_id: UUID,
     request: CreateSessionRequest,
-    _ = Depends(get_current_user),
+    _ = Depends(require_admin_or_organizer),
     create_session_use_case = Depends(get_create_session_use_case)
 ):
     
@@ -71,7 +71,7 @@ async def create_session(
 async def delete_session(
     event_id: UUID,
     session_id: UUID,
-    __ = Depends(get_current_user),
+    __ = Depends(require_admin_or_organizer),
     delete_session_use_case = Depends(get_delete_session_use_case)
 ):
     await delete_session_use_case.execute(session_id)
@@ -83,7 +83,7 @@ async def update_session(
     event_id: UUID,
     session_id: UUID,
     request: UpdateSessionRequest,
-    _ = Depends(get_current_user),
+    _ = Depends(require_admin_or_organizer),
     update_session_use_case = Depends(get_update_session_use_case)
 ):
     dto = UpdateSessionDTO(

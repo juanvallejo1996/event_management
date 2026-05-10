@@ -17,3 +17,7 @@ class UserRepository(ABC):
     @abstractmethod
     async def get_by_email(self, email: str) -> User | None:
         pass
+
+    @abstractmethod
+    async def delete(self, user_id: UUID) -> None:
+        pass

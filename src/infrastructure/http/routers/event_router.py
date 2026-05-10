@@ -8,7 +8,7 @@ from src.infrastructure.http.event_dependencies import (
     get_update_event_use_case, 
     get_delete_event_use_case
 )
-from src.infrastructure.http.auth_dependencies import get_current_user
+from src.infrastructure.http.auth_dependencies import get_current_user, require_admin_or_organizer
 
 from src.application.events.dto.update_event_dto import UpdateEventDTO
 from src.application.events.dto.create_event_dto import CreateEventDTO
@@ -46,7 +46,7 @@ async def get_event(
 @router.post("/", response_model=EventResponse, status_code=201)
 async def create_event(
     request: CreateEventRequest,
-    _ = Depends(get_current_user),
+    _ = Depends(require_admin_or_organizer),
     create_event_use_case = Depends(get_create_event_use_case)
     ):
     dto = CreateEventDTO(
@@ -68,7 +68,7 @@ async def create_event(
 async def update_event(
     event_id: UUID,
     request: UpdateEventRequest,
-    _ = Depends(get_current_user),
+    _ = Depends(require_admin_or_organizer),
     update_event_use_case = Depends(get_update_event_use_case)
 ):
     dto = UpdateEventDTO(
@@ -88,7 +88,7 @@ async def update_event(
 @router.delete("/{event_id}", response_model=None, status_code=204)
 async def delete_event(
     event_id: UUID,
-    _ = Depends(get_current_user),
+    _ = Depends(require_admin_or_organizer),
     delete_event_use_case = Depends(get_delete_event_use_case)
     ):
     await delete_event_use_case.execute(event_id)

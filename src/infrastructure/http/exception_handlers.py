@@ -1,6 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from src.domain.events.event_exceptions import EventNotFound, InvalidEventCapacity
+from src.domain.events.event_exceptions import (
+    EventNotFound,
+    EventAlreadyFinished,
+    InvalidEventDates,
+    InvalidEventCapacity,
+)
 from src.domain.users.user_exceptions import (
     UserNotFound,
     UserAlreadyExists,
@@ -32,6 +37,14 @@ def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(InvalidEventCapacity)
     async def invalid_capacity_handler(request: Request, exc: InvalidEventCapacity):
         return JSONResponse(status_code=400, content={"detail": str(exc)})
+
+    @app.exception_handler(InvalidEventDates)
+    async def invalid_event_dates_handler(request: Request, exc: InvalidEventDates):
+        return JSONResponse(status_code=422, content={"detail": str(exc)})
+
+    @app.exception_handler(EventAlreadyFinished)
+    async def event_already_finished_handler(request: Request, exc: EventAlreadyFinished):
+        return JSONResponse(status_code=409, content={"detail": str(exc)})
 
     @app.exception_handler(UserNotFound)
     async def user_not_found_handler(request: Request, exc: UserNotFound):

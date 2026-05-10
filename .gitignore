@@ -20,7 +20,9 @@ dist/
 
 # Environment variables
 .env
-.env.*
+
+# Poetry local config (machine-specific virtualenv settings)
+poetry.toml
 
 # IDEs
 .idea/

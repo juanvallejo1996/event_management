@@ -7,11 +7,15 @@ from src.infrastructure.http.routers.session_router import router as session_rou
 from src.infrastructure.http.routers.registration_router import router as register_router
 
 from src.infrastructure.http.exception_handlers import register_exception_handlers
+from src.infrastructure.database.session import engine
+from src.infrastructure.database.seed import seed_admin_user
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    await seed_admin_user()
     yield
+    await engine.dispose()
 
 
 app = FastAPI(title="Event Management API", lifespan=lifespan)

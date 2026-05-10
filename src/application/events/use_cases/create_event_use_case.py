@@ -22,6 +22,11 @@ class CreateEventUseCase:
         data: CreateEventDTO
     ) -> Event:
 
+        now = datetime.now(timezone.utc).replace(tzinfo=None)
+        starts_at = data.starts_at.replace(tzinfo=None)
+        ends_at = data.ends_at.replace(tzinfo=None)
+        Event.validate_dates(starts_at, ends_at, now)
+
         capacity = EventCapacity(data.capacity)
 
         event = Event(
@@ -30,10 +35,10 @@ class CreateEventUseCase:
             description=data.description,
             capacity=capacity.value,
             status=EventStatus.DRAFT,
-            starts_at=data.starts_at,
-            ends_at=data.ends_at,
-            created_at=datetime.now(timezone.utc),
-            updated_at=datetime.now(timezone.utc)
+            starts_at=starts_at,
+            ends_at=ends_at,
+            created_at=now,
+            updated_at=now,
         )
 
         return await self.repository.save(event)
