@@ -21,6 +21,15 @@ from src.infrastructure.http.responses.event_response import EventResponse
 router = APIRouter()
 
 
+@router.get("/", response_model=list[EventResponse], status_code=200)
+async def list_events(
+    _ = Depends(get_current_user),
+    search_events_use_case = Depends(get_search_events_use_case)
+):
+    events = await search_events_use_case.execute("")
+    return [EventResponse.model_validate(event) for event in events]
+
+
 @router.get("/search/{event_name}", response_model=list[EventResponse], status_code=200)
 async def search_events(
     event_name: str,
