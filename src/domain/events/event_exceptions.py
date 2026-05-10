@@ -1,4 +1,3 @@
-
 class EventNotFound(Exception):
     pass
 
@@ -9,6 +8,7 @@ class EventAlreadyFinished(Exception):
 
 class InvalidEventDates(Exception):
     pass
+
 
 class InvalidEventCapacity(Exception):
     pass

@@ -46,6 +46,9 @@ class UpdateEventUseCase:
         if data.ends_at is not None:
             event.ends_at = data.ends_at
 
+        if data.status is not None:
+            event.status = data.status
+
         event.updated_at = datetime.now(timezone.utc)
 
         return await self.repository.save(event)

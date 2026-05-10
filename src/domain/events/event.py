@@ -16,3 +16,9 @@ class Event:
     ends_at: datetime
     created_at: datetime
     updated_at: datetime
+
+    def has_capacity(self, current_registrations: int) -> bool:
+        return self.capacity > current_registrations
+
+    def can_add_session(self, session_capacity: int, current_sessions_total: int) -> bool:
+        return self.capacity >= (current_sessions_total + session_capacity)

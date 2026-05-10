@@ -1,4 +1,3 @@
-
 from uuid import UUID
 
 from fastapi import APIRouter, Depends
@@ -77,7 +76,8 @@ async def update_event(
         description=request.description,
         capacity=request.capacity,
         starts_at=request.starts_at,
-        ends_at=request.ends_at
+        ends_at=request.ends_at,
+        status=request.status,
     )
 
     event = await update_event_use_case.execute(event_id, dto)
@@ -94,4 +94,3 @@ async def delete_event(
     await delete_event_use_case.execute(event_id)
 
     return
-
